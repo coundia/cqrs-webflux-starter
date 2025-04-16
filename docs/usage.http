@@ -1,0 +1,16 @@
+
+POST http://127.0.0.1:8090/api/v1/commands/transaction
+Accept: application/json
+Content-Type: application/json
+
+{
+  "reference": "510",
+  "amount": 1000
+}
+
+###
+
+GET http://127.0.0.1:8090/api/v1/queries/transaction/stream
+Accept: text/event-stream
+
+###
