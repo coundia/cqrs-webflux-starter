@@ -50,4 +50,6 @@ Les endpoints `/api/v1/queries/entity/stream` permettent aux clients de s'abonne
 ---
 
 Généré par **Spring CQRS Code Generator**.
+
+Voir le Générateur : https://github.com/coundia/cqrs-webflux-generator
  
