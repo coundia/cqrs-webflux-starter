@@ -50,4 +50,5 @@ Accéder à l’API REST via Swagger: `http://localhost:8090/swagger-ui.html`
 Généré par **Spring CQRS Code Generator**.
 
 Voir le Générateur : https://github.com/coundia/cqrs-webflux-generator
+Voir le client SSE en angular:  https://github.com/coundia/angular-client-sse
  
