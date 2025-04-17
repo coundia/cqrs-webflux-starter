@@ -24,6 +24,8 @@ project-root/
 │   └── controller (REST, SSE)
 ```
 
+Voir [tree.md](docs/tree.md)
+
 ## 📊 Fonctionnalités
 
 - Génération de CRUD CQRS complets
@@ -35,6 +37,7 @@ project-root/
 
 Accéder à l’API REST via Swagger: `http://localhost:8090/swagger-ui.html`
  
+![api_v1.png](docs/api_v1.png)
 
 ## 📚 Domaines d'application
 
@@ -42,11 +45,6 @@ Accéder à l’API REST via Swagger: `http://localhost:8090/swagger-ui.html`
 - ERP, CRM, outils de gestion modulaire
 - Plateformes e-commerce à événements
 
-## 🌐 SSE (Server-Sent Events)
-
-Les endpoints `/api/v1/queries/entity/stream` permettent aux clients de s'abonner aux événements en temps réel, sans WebSocket.
-
- 
 ---
 
 Généré par **Spring CQRS Code Generator**.
