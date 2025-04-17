@@ -1,9 +1,9 @@
 package com.pcoundia.transactions.presentation.controller;
 
-import com.pcoundia.transactions.application.dto.TransactionResponse;
-import com.pcoundia.transactions.application.query.ListTransactionQuery;
-import com.pcoundia.transactions.application.dto.*;
-import com.pcoundia.transactions.application.queryHandler.*;
+	import com.pcoundia.transactions.application.dto.TransactionResponse;
+	import com.pcoundia.transactions.application.query.ListTransactionQuery;
+	import com.pcoundia.transactions.application.dto.*;
+	import com.pcoundia.transactions.application.queryHandler.*;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
+import com.pcoundia.shared.application.ApiResponseDto;
 
 @RestController
 @RequestMapping("/api/v1/queries/list-transaction")
@@ -35,7 +36,7 @@ description = "Returns a paginated list of transactions based on page and limit 
 @ApiResponse(
 responseCode = "200",
 description = "Successfully retrieved list of transactions",
-content = @Content(mediaType = "application/json", schema = @Schema(implementation = TransactionPagedResponse.class))
+content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiResponseDto.class))
 ),
 @ApiResponse(
 responseCode = "500",
@@ -43,13 +44,15 @@ description = "Internal server error",
 content = @Content
 )
 })
-public Mono<TransactionPagedResponse> list(
+public Mono<ApiResponseDto> list(
 	@Parameter(description = "Page number (zero-based index)", example = "0")
 	@RequestParam(defaultValue = "0") int page,
 
 	@Parameter(description = "Number of items per page", example = "10")
 	@RequestParam(defaultValue = "10") int limit
 	) {
-	return Mono.fromFuture(handler.handle(new ListTransactionQuery(page, limit)));
+	return Mono.fromFuture(handler.handle(new ListTransactionQuery(page, limit)))
+	.map(ApiResponseDto::ok)
+	.onErrorResume(ex -> Mono.just(ApiResponseDto.error("Failed to fetch transactions: " + ex.getMessage())));
 	}
-	}
+}

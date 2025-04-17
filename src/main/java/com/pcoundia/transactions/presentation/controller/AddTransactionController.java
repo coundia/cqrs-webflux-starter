@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
+import com.pcoundia.shared.application.ApiResponseDto;
 
 @RestController
 @RequestMapping("/api/v1/commands/transaction")
@@ -38,24 +39,25 @@ content = @Content(schema = @Schema(implementation = TransactionRequest.class))
 )
 @ApiResponses(value = {
 @ApiResponse(responseCode = "200", description = "Successfully created",
-content = @Content(schema = @Schema(implementation = TransactionResponse.class))),
+content = @Content(schema = @Schema(implementation = ApiResponseDto.class))),
 @ApiResponse(responseCode = "500", description = "Internal server error",
 content = @Content(schema = @Schema()))
 })
-public Mono<ResponseEntity<TransactionResponse>> addTransaction(@RequestBody TransactionRequest transactionRequest) {
+public Mono<ApiResponseDto> addTransaction(@RequestBody TransactionRequest transactionRequest) {
 	CreateTransactionCommand command = TransactionMapper.toCommand(transactionRequest);
 
 	return handler.handle(command)
 	.doOnSuccess(v -> log.info("Transaction created successfully"))
-	.thenReturn(ResponseEntity.ok(
+	.thenReturn(ApiResponseDto.ok(
 	new TransactionResponse(
 		command.getId().value(),
 		command.getReference().value(),
 		command.getAmount().value()
-	)))
+	)
+	))
 	.onErrorResume(ex -> {
 	log.error("Failed to create transaction: {}", ex.getMessage(), ex);
-	return Mono.just(ResponseEntity.internalServerError().build());
+	return Mono.just(ApiResponseDto.error("Failed to create transaction"));
 	});
 	}
-}
+	}

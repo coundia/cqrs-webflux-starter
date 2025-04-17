@@ -7,7 +7,7 @@ package com.pcoundia.transactions.presentation.controller;
 	import com.pcoundia.transactions.application.dto.*;
 	import com.pcoundia.transactions.application.mapper.*;
 	import com.pcoundia.transactions.infrastructure.repository.*;
-	import com.pcoundia.transactions.presentation.TransactionPublisher;
+	import com.pcoundia.transactions.presentation.sse.TransactionPublisher;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;

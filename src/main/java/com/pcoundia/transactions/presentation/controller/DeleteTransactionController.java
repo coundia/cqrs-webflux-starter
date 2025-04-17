@@ -16,10 +16,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
+import com.pcoundia.shared.application.ApiResponseDto;
 
 @RestController
 @RequestMapping("/api/v1/commands/transaction")
@@ -39,17 +38,18 @@ summary = "Delete a transaction",
 description = "Deletes a transaction based on the provided identifier"
 )
 @ApiResponses(value = {
-@ApiResponse(responseCode = "200", description = "Transaction deleted successfully"),
+@ApiResponse(responseCode = "200", description = "Transaction deleted successfully",
+content = @Content(schema = @Schema(implementation = ApiResponseDto.class))),
 @ApiResponse(responseCode = "400", description = "Invalid ID supplied", content = @Content),
 @ApiResponse(responseCode = "404", description = "Transaction not found", content = @Content),
 @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
 })
-public Mono<ResponseEntity<String>> deleteTransaction(
+public Mono<ApiResponseDto> deleteTransaction(
 	@Parameter(description = "ID of the transaction to delete", required = true)
 	@PathVariable String id
 	) {
 	if (id == null || id.isEmpty()) {
-	return Mono.just(ResponseEntity.badRequest().body("Invalid id"));
+	return Mono.just(ApiResponseDto.error("Invalid id"));
 	}
 
 	log.info("Deleting Transaction with id: {}", id);
@@ -60,11 +60,10 @@ public Mono<ResponseEntity<String>> deleteTransaction(
 
 	return handler.handle(command)
 	.doOnSuccess(v -> log.info("Transaction deleted successfully"))
-	.thenReturn(ResponseEntity.ok("Transaction deleted successfully"))
+	.thenReturn(ApiResponseDto.ok("Transaction deleted successfully"))
 	.onErrorResume(ex -> {
 	log.error("Error deleting Transaction: {}", ex.getMessage(), ex);
-	return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-	.body("Error deleting Transaction: " + ex.getMessage()));
+	return Mono.just(ApiResponseDto.error("Error deleting Transaction: " + ex.getMessage()));
 	});
 	}
-}
+	}

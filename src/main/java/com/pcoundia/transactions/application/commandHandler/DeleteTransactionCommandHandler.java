@@ -3,7 +3,7 @@ package com.pcoundia.transactions.application.commandHandler;
 import com.pcoundia.transactions.application.command.DeleteTransactionCommand;
 import com.pcoundia.transactions.infrastructure.repository.TransactionRepository;
 import com.pcoundia.transactions.infrastructure.entity.Transaction;
-import com.pcoundia.transactions.presentation.TransactionPublisher;
+import com.pcoundia.transactions.presentation.sse.TransactionPublisher;
 import com.pcoundia.transactions.application.mapper.TransactionMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.pcoundia.transactions.presentation;
+package com.pcoundia.transactions.presentation.sse;
 	import com.pcoundia.transactions.application.dto.*;
 
 import org.springframework.stereotype.Component;
